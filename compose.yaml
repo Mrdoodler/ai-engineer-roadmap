@@ -1,0 +1,23 @@
+# Postgres + pgvector for the whole roadmap.
+# Start:  docker compose up -d      (run from the repo root)
+# Stop:   docker compose stop
+# SQL:    docker compose exec db psql -U postgres -d roadmap
+#
+# Port 5433 (not the default 5432) so it never clashes with other Postgres containers on this laptop.
+
+services:
+  db:
+    image: pgvector/pgvector:pg17
+    container_name: roadmap-db
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres # local learning only, never reuse this anywhere real
+      POSTGRES_DB: roadmap
+    ports:
+      - "5433:5432"
+    volumes:
+      - roadmap-pgdata:/var/lib/postgresql/data
+    restart: unless-stopped
+
+volumes:
+  roadmap-pgdata:
